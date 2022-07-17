@@ -36,20 +36,25 @@
 </template>
 
 <script>
-import myfetch from "@/utils/fetch";
-import { useRouter } from "vue-router";
 import { reactive, computed } from "vue";
+import { useRouter } from "vue-router";
 import useVuelidate from "@vuelidate/core";
 import { required, email } from "@vuelidate/validators";
+import { useAuthStore } from "../stores/auth";
 
 export default {
   name: "LoggIn",
   setup() {
+    // store pinia d'authentification
+    const authStore = useAuthStore();
+
+    // données reactives du formulaire
     const formData = reactive({
       email: "",
       password: "",
     });
 
+    //regles de validation de vuelidate
     const rules = computed(() => {
       return {
         email: { required, email },
@@ -57,33 +62,37 @@ export default {
       };
     });
 
-    const v$ = useVuelidate(rules, formData);
-
+    //constante d'appelle du router
     const router = useRouter();
 
+    // constante vuelidate d'appel de la fonction de validation des inputs
+    const v$ = useVuelidate(rules, formData);
+
+    //fonction d'envoie du formulaire
     const submit = async () => {
+      //validation des inputs
       const result = await v$._value.$validate();
       if (result) {
-        const response = await myfetch("POST", "/user/login", formData);
-        if (response.user) {
-          localStorage.setItem("user", JSON.stringify(response.user));
-          localStorage.setItem("token", JSON.stringify(response.token));
-          await router.push(`/profil?=${response.user.uuid}`);
-        } else {
-          alert("Les identifiants ne correspondent à aucun utilisateur.");
-        }
+        // fetch login du store
+        await authStore.login(formData);
+        //création d'une page profil avec uuid en params
+        await router.push({
+          name: "ProfilView",
+          params: { uuid: authStore.user.user.uuid },
+        });
+      } else {
+        // message d'erreur
+        alert("Les identifiants ne correspondent à aucun utilisateur.");
       }
     };
 
     return {
       v$,
       formData,
-      router,
       submit,
+      router,
     };
   },
-  props: {},
-  components: {},
 };
 </script>
 

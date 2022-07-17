@@ -18,15 +18,9 @@
 </template>
 
 <script>
-import { onMounted } from "vue";
-import { useUserStore } from "../stores/user";
-import myfetch from "../utils/fetch.js";
 export default {
   name: "ProfilPage",
-  setup() {
-    onMounted(() => {});
-    return {};
-  },
+  setup() {},
 };
 </script>
 

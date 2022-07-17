@@ -20,13 +20,6 @@
         </span>
         deconnection
       </button>
-
-      <button>
-        <span>
-          <font-awesome-icon icon="fa-solid fa-key" />
-        </span>
-        se connecter
-      </button>
     </nav>
   </div>
 </template>
@@ -41,14 +34,17 @@ export default {
 <style scoped>
 div {
   text-align: center;
+  display: flex;
+  margin: auto;
 }
 
 nav {
   position: fixed;
-  top: 10px;
+  width: 400px;
   border: 1px solid transparent;
   background-color: white;
   border-radius: 15px;
+  z-index: 2;
 }
 
 button {

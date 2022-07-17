@@ -1,23 +1,28 @@
 <template>
   <div>
-    <div>
-      <ProfilPage />
-    </div>
+    <NavigationLinks />
+
+    <ProfilPage />
   </div>
 </template>
 
 <script>
 import ProfilPage from "../components/ProfilPage.vue";
+import NavigationLinks from "../components/Navigation.vue";
 
 export default {
   name: "ProfilView",
   components: {
     ProfilPage,
+    NavigationLinks,
   },
 };
 </script>
 
 <style scoped>
+.div {
+  position: relative;
+}
 .flex {
   display: flex;
 }

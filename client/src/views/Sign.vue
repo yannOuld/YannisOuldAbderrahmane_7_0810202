@@ -1,6 +1,5 @@
 <template>
   <div class="view">
-    <NavigationLinks />
     <img
       class="logo"
       alt="Groupamania logo"
@@ -24,7 +23,6 @@
 </template>
 
 <script>
-import NavigationLinks from "../components/Navigation.vue";
 import SignIn from "../components/SignIn.vue";
 import LoggIn from "../components/LoggIn.vue";
 import { reactive } from "vue";
@@ -34,7 +32,6 @@ export default {
   components: {
     SignIn,
     LoggIn,
-    NavigationLinks,
   },
 
   setup() {

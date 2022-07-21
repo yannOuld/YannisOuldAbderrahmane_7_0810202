@@ -23,8 +23,8 @@
 </template>
 
 <script>
-import SignIn from "../components/SignIn.vue";
-import LoggIn from "../components/LoggIn.vue";
+import SignIn from "../components/Login/SignIn.vue";
+import LoggIn from "../components/Login/LoggIn.vue";
 import { reactive } from "vue";
 
 export default {

@@ -32,10 +32,10 @@ function request(method) {
 function authHeader(url) {
 
     // variable user du store d'authentification 
-    const { user } = useAuthStore();
+    const { userData } = useAuthStore();
 
     // verification deu user token 
-    const isLoggedIn = !!user?.token;
+    const isLoggedIn = !!userData?.token;
 
     // on verifie que l'url de l'url de  l'api est correcte 
     const isApiUrl = url.startsWith('http://localhost:3000/api');
@@ -43,7 +43,7 @@ function authHeader(url) {
     // si il y a un token et que l'api est correcte
     if (isLoggedIn && isApiUrl) {
         // alors le token d'authentification des requetes fetch est le user token 
-        return { Authorization: `Bearer ${user.token}` };
+        return { Authorization: `Bearer ${userData.token}` };
     } else {
         // sinon en renvoie un objet vide à la place du headers des requetes
         return {};
@@ -59,8 +59,8 @@ function handleResponse(response) {
         // si la requete a echouée 
         if (!response.ok) {
             //récuperation de la fonction logout du store auth
-            const { user, logout } = useAuthStore();
-            if ([401, 403].includes(response.status) && user) {
+            const { userData, logout } = useAuthStore();
+            if ([401, 403].includes(response.status) && userData) {
                 // auto logout if 401 Unauthorized or 403 Forbidden response returned from api
                 logout();
             }

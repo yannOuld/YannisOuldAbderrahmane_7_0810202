@@ -142,13 +142,13 @@ export default {
       const validation = await v$._value.$validate();
 
       if (!validation) {
-        alert("Veuillez vérifier les informations.");
+        return alert("Veuillez vérifier les informations.");
       } else {
         const response = await myfetch("POST", "/user/signup", formData);
         if (response.uuid) {
           return showPopup();
         } else {
-          alert("email déja utilisée");
+          return alert("email déja utilisée");
         }
       }
     };

@@ -1,7 +1,7 @@
 <template>
   <div class="bloc">
     <h1>Connexion</h1>
-    <form @submit.prevent="submit">
+    <form @submit="submit">
       <div class="form-row">
         <!-- Email -->
         <div class="form-group">
@@ -40,7 +40,7 @@ import { reactive, computed } from "vue";
 import { useRouter } from "vue-router";
 import useVuelidate from "@vuelidate/core";
 import { required, email } from "@vuelidate/validators";
-import { useAuthStore } from "../stores/auth";
+import { useAuthStore } from "../../stores/auth";
 
 export default {
   name: "LoggIn",
@@ -71,18 +71,24 @@ export default {
     //fonction d'envoie du formulaire
     const submit = async () => {
       //validation des inputs
-      const result = await v$._value.$validate();
-      if (result) {
-        // fetch login du store
-        await authStore.login(formData);
-        //création d'une page profil avec uuid en params
-        await router.push({
-          name: "ProfilView",
-          params: { uuid: authStore.user.user.uuid },
-        });
-      } else {
+      const { userData } = authStore;
+      const validation = await v$._value.$validate();
+
+      if (!validation) {
         // message d'erreur
-        alert("Les identifiants ne correspondent à aucun utilisateur.");
+        return alert("Tout les champs doivent être fournis !");
+      }
+      try {
+        // fetch login du store
+        await authStore.login(formData).then(
+          router.push({
+            name: "ProfilView",
+            params: { uuid: userData.user.uuid },
+          })
+        );
+        //création d'une page profil avec uuid en params
+      } catch (error) {
+        return alert(error.message);
       }
     };
 

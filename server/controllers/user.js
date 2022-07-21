@@ -2,7 +2,6 @@ const db = require('../models');
 const { User } = db.sequelize.models;
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const AsyncHandler = require('express-async-handler');
 const { SECRET_KEY } = process.env;
 
 // regex de vérification des inputs du formulaire 
@@ -98,7 +97,7 @@ exports.login = async (req, res, next) => {
 
     } catch (err) {
         console.error(err);
-        res.status(500).json(err.message)
+        res.status(401).json(err.message)
     }
 };
 

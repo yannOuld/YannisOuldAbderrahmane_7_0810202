@@ -1,5 +1,4 @@
 import { defineStore } from "pinia";
-import { useRouter } from "vue-router";
 import { fetchWrapper } from "../utils/fetchWrapp.js";
 
 
@@ -11,35 +10,36 @@ export const useAuthStore = defineStore({
 
     // States pinia user du localStorage et url de retour en cas de clear du localStorage 
     state: () => ({
-        user: JSON.parse(localStorage.getItem('user')),
+        userData: JSON.parse(localStorage.getItem('user')),
         returnUrl: null
     }),
 
     actions: {
         // fonction de connection
         async login(formData) {
-            const user = await fetchWrapper.post(`http://localhost:3000/api/user/login`, formData);
+            //fetch post login dans une variable
+            const userData = await fetchWrapper.post(`http://localhost:3000/api/user/login`, formData);
 
-            // mise a jour du user du store
-            this.user = user;
+            // mise a jour du store avec la variable 
+            this.userData = userData;
 
             // inscription du user dans le localStorage 
-            localStorage.setItem('user', JSON.stringify(user));
+            localStorage.setItem('user', JSON.stringify(userData));
 
         },
+
+        //fonction de déconnection 
+        logout() {
+            // user du store mis a null
+            this.userData = null;
+
+            //enlever le user du localStorage 
+            localStorage.removeItem('user');
+
+        },
+
+
     },
-    //fonction de déconnection 
-    logout() {
-        // user du store mis a null
-        this.user = null;
-
-        //enlever le user du localStorage 
-        localStorage.removeItem('user');
-
-        //retour à l'écran de connection 
-        const router = useRouter();
-        router.push('/');
-    }
 
 
 
